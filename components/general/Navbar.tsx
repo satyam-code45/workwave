@@ -26,14 +26,10 @@ const Navbar = async () => {
           </form>
         ):
         (
-          <form
-          action={async ()=>{
-            "use server";
-            await signOut({redirectTo:"/login"})
-          }}
+          <Link href={"/login"}
         >
         <Button>Login</Button>
-        </form>
+        </Link>
         )}
         <ThemeToggle></ThemeToggle>
       </div>

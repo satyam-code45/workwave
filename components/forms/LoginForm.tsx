@@ -40,7 +40,7 @@ const  LoginForm = async () => {
                 action={async () => {
                   "use server";
 
-                  await signIn("github", {
+                  await signIn("google", {
                     redirectTo: "/",
                   });
                 }}
