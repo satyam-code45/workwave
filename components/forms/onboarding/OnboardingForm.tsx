@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import UserTypeForm from "./UserTypeForm";
 import CompanyForm from "./CompanyForm";
+import JobSeekerForm from "./JobSeekerForm";
 
 type UserSelectionType = "company" |"jobSeeker" | null;
 
@@ -32,7 +33,7 @@ const OnboardingForm = () => {
         return userType === "company" ? (
           <CompanyForm/>
         ) : (
-          <p>User is a jobSeeker</p>
+          <JobSeekerForm/>
         )
 
       default :
