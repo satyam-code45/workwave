@@ -128,7 +128,8 @@ const CompanyForm = () => {
                         </div>
                       </SelectItem>
                     </SelectGroup>
-                    <SelectGroup>Country</SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Country</SelectLabel>
                     {filteredCountries.length > 0 ? (
                       filteredCountries.map((country) => (
                         <SelectItem key={country.code} value={country.name}>
@@ -141,6 +142,7 @@ const CompanyForm = () => {
                         No results found
                       </p>
                     )}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
                 <FormMessage />

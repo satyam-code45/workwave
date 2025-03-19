@@ -5,22 +5,21 @@ import requireUser from "../utils/requireUser";
 
 async function checkIfUserOnboarded(userId: string) {
   const user = await prisma.user.findUnique({
-    where:{
+    where: {
       id: userId,
     },
-    select:{
+    select: {
       onboardingCompleted: true,
-    }
+    },
   });
   if (user?.onboardingCompleted === true) {
-    return redirect("/")
+    return redirect("/");
   }
 
   return user;
 }
 
-const  Onboarding = async () => {
-
+const Onboarding = async () => {
   const session = await requireUser();
   await checkIfUserOnboarded(session.id as string);
 
