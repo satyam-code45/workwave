@@ -31,6 +31,7 @@ import { Button } from "../ui/button";
 import { createJob } from "@/app/actions";
 import BenefitsSelector from "../general/BenefitsSelector";
 import JobListingDurationSelector from "../general/JobListingDurationSelector";
+import { Loader2 } from "lucide-react";
 
 interface CreateJobFormProps {
   companyName: string;
@@ -64,8 +65,8 @@ export function CreateJobForm({
       jobDescription: "",
       jobTitle: "",
       location: "",
-      salaryFrom: 0,
-      salaryTo: 0,
+      salaryFrom: 30000,
+      salaryTo: 500000,
       companyLogo: companyLogo,
       listingDuration: 30,
     },
@@ -288,7 +289,16 @@ export function CreateJobForm({
           </CardContent>
         </Card>
 
-        <Button type="submit">Continue</Button>
+        <Button type="submit" className="w-full" disabled={pending}>
+          {pending ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              <span>Submitting......</span>
+            </>
+          ) : (
+            "Create Job"
+          )}
+        </Button>
       </form>
     </Form>
   );
