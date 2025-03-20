@@ -27,27 +27,47 @@ import { countryList } from "@/app/utils/countriesLists";
 import { useState } from "react";
 import { SalaryRangeSelector } from "../general/salaryRangeSelector";
 import { JobDescriptionEditor } from "../richTextEditor/JobDescriptionEditor";
+import { Button } from "../ui/button";
+import { createJob } from "@/app/actions";
+import BenefitsSelector from "../general/BenefitsSelector";
+import JobListingDurationSelector from "../general/JobListingDurationSelector";
 
-export function CreateJobForm() {
+interface CreateJobFormProps {
+  companyName: string;
+  companyLocation: string;
+  companyAbout: string;
+  companyLogo: string;
+  companyXAccount: string | null;
+  companyWebsite: string;
+}
+
+export function CreateJobForm({
+  companyAbout,
+  companyLocation,
+  companyLogo,
+  companyXAccount,
+  companyName,
+  companyWebsite,
+}: CreateJobFormProps) {
   const [typedInput, setTypedInput] = useState("");
 
   const form = useForm<z.infer<typeof jobSchema>>({
     resolver: zodResolver(jobSchema),
     defaultValues: {
       benefits: [],
-      companyAbout: "",
-      companyLocation: "",
-      companyLogo: "",
-      companyName: "",
-      companyWebstie: "",
-      companyXAccount: "",
+      companyAbout: companyAbout,
+      companyLocation: companyLocation,
+      companyName: companyName,
+      companyWebsite: companyWebsite,
+      companyXAccount: companyXAccount || "",
       employmentType: "",
       jobDescription: "",
       jobTitle: "",
-      listingDuration: 30,
       location: "",
       salaryFrom: 0,
-      SalaryTo: 0,
+      salaryTo: 0,
+      companyLogo: companyLogo,
+      listingDuration: 30,
     },
   });
 
@@ -61,14 +81,38 @@ export function CreateJobForm() {
       return 0;
     });
 
+  const [pending, setPending] = useState(false);
+  async function onSubmit(values: z.infer<typeof jobSchema>) {
+    try {
+      setPending(true);
+
+      await createJob(values);
+    } catch (error) {
+      if (error instanceof Error && error.message !== "NEXT_REDIRECT") {
+        console.log(
+          "something went wrong in the onSubmit Handler in CompanyForm"
+        );
+      }
+    } finally {
+      setPending(false);
+    }
+  }
+
+  const onError = (errors: any) => {
+    console.log("❌ Form submission failed due to validation errors", errors);
+  };
+
   return (
     <Form {...form}>
-      <form className="col-span-1 lg:col-span-2 flex flex-col gap-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="col-span-1 lg:col-span-2 flex flex-col gap-8"
+      >
         <Card>
           <CardHeader>
             <CardTitle>Job Information</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -182,31 +226,69 @@ export function CreateJobForm() {
               <FormItem>
                 <FormLabel>Salary Range</FormLabel>
                 <FormControl>
-                    <SalaryRangeSelector
-                        control={form.control}
-                        minSalary={10000}
-                        maxSalary={1000000}
-                        currency="USD"
-                        step={2000}
-                    />
+                  <SalaryRangeSelector
+                    control={form.control}
+                    minSalary={30000}
+                    maxSalary={1000000}
+                  />
                 </FormControl>
+                <FormMessage>
+                  {form.formState.errors.salaryFrom?.message ||
+                    form.formState.errors.salaryTo?.message}
+                </FormMessage>
               </FormItem>
             </div>
 
-            <FormField 
-                control={form.control}
-                name="jobDescription"
-                render={({field}) => (
-                    <FormItem>
-                        <FormLabel>Job Description</FormLabel>
-                        <FormControl>
-                            <JobDescriptionEditor />
-                        </FormControl>
-                    </FormItem>
-                )}
+            <FormField
+              control={form.control}
+              name="jobDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Description</FormLabel>
+                  <FormControl>
+                    <JobDescriptionEditor field={field as any} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="benefits"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Benefits</FormLabel>
+                  <FormControl>
+                    <BenefitsSelector field={field as any} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Job Listing Duration</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <FormField
+              control={form.control}
+              name="listingDuration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <JobListingDurationSelector field={field as any} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        <Button type="submit">Continue</Button>
       </form>
     </Form>
   );
