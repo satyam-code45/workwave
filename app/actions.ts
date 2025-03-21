@@ -129,26 +129,26 @@ export async function createJob(data: z.infer<typeof jobSchema>) {
   }
 
   //Stripe setup
-  let stripeCustomerId = company.user.stripeCustomerId
+  let stripeCustomerId = company.user.stripeCustomerId;
 
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email as string,
-      name: user.name as string
-    })
+      name: user.name as string,
+    });
 
     stripeCustomerId = customer.id;
 
     //update user with stripe customer id
 
     await prisma.user.update({
-      where:{
-        id: user.id
+      where: {
+        id: user.id,
       },
-      data:{
-        stripeCustomerId: stripeCustomerId
-      }
-    })
+      data: {
+        stripeCustomerId: stripeCustomerId,
+      },
+    });
   }
 
   const jobPost = await prisma.jobPost.create({
@@ -163,38 +163,44 @@ export async function createJob(data: z.infer<typeof jobSchema>) {
       benefits: validateData.benefits,
       companyId: company.id,
     },
+    select:{
+      id: true,
+    },
   });
 
   const pricingTier = jobListingDurationPricing.find(
     (tier) => tier.days === validateData.listingDuration
-  )
+  );
 
   if (!pricingTier) {
-    throw new Error("Invalid Listing Duration Selected")
+    throw new Error("Invalid Listing Duration Selected");
   }
 
   const session = await stripe.checkout.sessions.create({
     customer: stripeCustomerId,
     line_items: [
       {
-        price_data:{
-          product_data:{
+        price_data: {
+          product_data: {
             name: `Job Posting - ${pricingTier.days} Days`,
             description: pricingTier.description,
             images: [
-              "https://iwgg2l2l6b.ufs.sh/f/g8rwv5jUkK4cFGdSj257pU9iuAlQP2Wq6YeX3G1LdNDwz8Bo"
-            ]
+              "https://iwgg2l2l6b.ufs.sh/f/g8rwv5jUkK4cFGdSj257pU9iuAlQP2Wq6YeX3G1LdNDwz8Bo",
+            ],
           },
           currency: "USD",
           unit_amount: pricingTier.price * 100,
         },
-        quantity:1,
-      }
+        quantity: 1,
+      },
     ],
+    metadata: {
+      jobId: jobPost.id,
+    },
     mode: "payment",
     success_url: `${process.env.NEXT_PUBLIC_URL}/payment/success`,
     cancel_url: `${process.env.NEXT_PUBLIC_URL}/payment/cancel`,
-  })
+  });
 
   return redirect(session.url as string);
 }
