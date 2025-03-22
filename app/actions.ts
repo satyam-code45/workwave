@@ -164,7 +164,7 @@ export async function createJob(data: z.infer<typeof jobSchema>) {
       benefits: validateData.benefits,
       companyId: company.id,
     },
-    select:{
+    select: {
       id: true,
     },
   });
@@ -179,11 +179,11 @@ export async function createJob(data: z.infer<typeof jobSchema>) {
   //ingest implementation
   await inngest.send({
     name: "job/created",
-    data:{
+    data: {
       jobId: jobPost.id,
       expirationDays: validateData.listingDuration,
-    }
-  })
+    },
+  });
 
   const session = await stripe.checkout.sessions.create({
     customer: stripeCustomerId,
@@ -212,4 +212,40 @@ export async function createJob(data: z.infer<typeof jobSchema>) {
   });
 
   return redirect(session.url as string);
+}
+
+export async function saveJobPost(jobId: string) {
+  const user = await requireUser();
+
+  const req = await request();
+  const decision = await aj.protect(req);
+
+  if (decision.isDenied()) {
+    throw new Error("Forbidden");
+  }
+
+  await prisma.savedJobPost.create({
+    data: {
+      jobPostId: jobId,
+      userId: user.id as string,
+    },
+  });
+}
+
+export async function unSaveJobPost(savedJobPostId: string) {
+  const user = await requireUser();
+
+  const req = await request();
+  const decision = await aj.protect(req);
+
+  if (decision.isDenied()) {
+    throw new Error("Forbidden");
+  }
+
+  await prisma.savedJobPost.delete({
+    where: {
+      id: savedJobPostId,
+      userId: user.id,
+    },
+  });
 }

@@ -12,7 +12,7 @@ interface GeneralSubmitButtonsProps{
     width?: string
 }
 
-const GeneralSubmitButtons = ({text,icon,variantButton,width}: GeneralSubmitButtonsProps) => {
+export function GeneralSubmitButtons({text,icon,variantButton,width}: GeneralSubmitButtonsProps){
   const { pending } = useFormStatus();
   return (
     <Button variant={variantButton} className={width} disabled={pending}>
@@ -31,4 +31,12 @@ const GeneralSubmitButtons = ({text,icon,variantButton,width}: GeneralSubmitButt
   );
 };
 
-export default GeneralSubmitButtons;
+export function SaveJobButton(){
+  const {pending} = useFormStatus()
+
+  return(
+    <Button variant="outline" type="submit" disabled={pending}>
+
+    </Button>
+  )
+}

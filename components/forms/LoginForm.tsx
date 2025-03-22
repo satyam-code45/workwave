@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 import Github from "@/public/Github";
 import Google from "@/public/Google";
 import { auth, signIn } from "@/app/utils/auth";
-import GeneralSubmitButtons from "../general/SubmitButtons";
+import {GeneralSubmitButtons} from "../general/SubmitButtons";
 import { redirect } from "next/navigation";
 
 const  LoginForm = async () => {

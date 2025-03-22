@@ -5,12 +5,13 @@ import { benefits } from "@/app/utils/listOfBenefits";
 import { JsonToHtlm } from "@/components/general/JsonToHtlm";
 import Navbar from "@/components/general/Navbar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { request } from "@arcjet/next";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const aj = arcjet.withRule(
@@ -116,10 +117,19 @@ export default async function JobIdPage({ params }: { params: Params }) {
                 </div>
               </div>
 
-              <Button variant="outline">
+              {/* <Button variant="outline">
                 <Heart className="size-4" />
                 Save Job
-              </Button>
+              </Button> */}
+
+              {session?.user ? (
+                <form></form>
+              ): (
+                <Link href="/login" className={buttonVariants({variant: "outline"})}>
+                <Heart className="size-4" />
+                Save Job
+              </Link>
+              )}
             </div>
 
             <section>
