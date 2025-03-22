@@ -16,7 +16,7 @@ export function EmptyState({
   title,
 }: iAppProps) {
   return (
-    <div className="flex flex-col flex-2 h-full items-center justify-center rounded-md border border-dashed p-8">
+    <div className="flex flex-col flex-2 h-full items-center justify-center rounded-md border border-primary border-dashed supports-[backdrop-filter]:bg-background/60 shadow-lg  bg-background/80 p-8">
       <div className="flex size-20 items-center justify-center rounded-full bg-primary/10">
         <Ban className="size-10 text-primary" />
       </div>

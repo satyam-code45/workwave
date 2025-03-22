@@ -1,22 +1,35 @@
-"use client"
+"use client";
 
 import React, { ReactElement } from "react";
-import { Button, ButtonProps } from "../ui/button";
+import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
-import { Loader2 } from "lucide-react";
+import { Heart, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-interface GeneralSubmitButtonsProps{
-    text: String,
-    icon?: ReactElement,
-    variantButton?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null | undefined,
-    width?: string
+interface GeneralSubmitButtonsProps {
+  text: String;
+  icon?: ReactElement;
+  variantButton?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link"
+    | null
+    | undefined;
+  width?: string;
 }
 
-export function GeneralSubmitButtons({text,icon,variantButton,width}: GeneralSubmitButtonsProps){
+export function GeneralSubmitButtons({
+  text,
+  icon,
+  variantButton,
+  width,
+}: GeneralSubmitButtonsProps) {
   const { pending } = useFormStatus();
   return (
     <Button variant={variantButton} className={width} disabled={pending}>
-
       {pending ? (
         <>
           <Loader2 className="size-4 animate-spin" />
@@ -24,19 +37,33 @@ export function GeneralSubmitButtons({text,icon,variantButton,width}: GeneralSub
         </>
       ) : (
         <>
-          {icon}<span>{text}</span>
+          {icon}
+          <span>{text}</span>
         </>
       )}
     </Button>
   );
-};
+}
 
-export function SaveJobButton(){
-  const {pending} = useFormStatus()
+export function SaveJobButton({savedJob} : {savedJob : boolean}) {
+  const { pending } = useFormStatus();
 
-  return(
+  return (
     <Button variant="outline" type="submit" disabled={pending}>
-
+      {pending ? (
+        <>
+          <Loader2 className="size-4 animate-spin" />
+          {savedJob ? "Unsaving..." : "Saving..."}
+        </>
+      ) : (
+        <>
+          <Heart  className={cn(
+            savedJob ? "fill-current text-primary" : "",
+            "size-4 transition-colors"
+          )}/>
+          {savedJob ? "Saved" : "Save Job"}
+        </>
+      )}
     </Button>
-  )
+  );
 }

@@ -1,9 +1,11 @@
+import { saveJobPost, unSaveJobPost } from "@/app/actions";
 import arcjet, { detectBot, tokenBucket } from "@/app/utils/arcjet";
 import { auth } from "@/app/utils/auth";
 import { prisma } from "@/app/utils/db";
 import { benefits } from "@/app/utils/listOfBenefits";
 import { JsonToHtlm } from "@/components/general/JsonToHtlm";
 import Navbar from "@/components/general/Navbar";
+import { SaveJobButton } from "@/components/general/SubmitButtons";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -43,36 +45,51 @@ function getClient(session: boolean) {
   }
 }
 
-async function getJob(id: string) {
-  const jobData = await prisma.jobPost.findUnique({
-    where: {
-      id: id,
-      status: "ACTIVE",
-    },
-    select: {
-      jobDescription: true,
-      jobTitle: true,
-      location: true,
-      employmentType: true,
-      benefits: true,
-      createdAt: true,
-      listingDuration: true,
-      Company: {
-        select: {
-          name: true,
-          logo: true,
-          location: true,
-          about: true,
+async function getJob(id: string, userId?: string) {
+  const [jobData, savedJob] = await Promise.all([
+    await prisma.jobPost.findUnique({
+      where: {
+        id: id,
+        status: "ACTIVE",
+      },
+      select: {
+        jobDescription: true,
+        jobTitle: true,
+        location: true,
+        employmentType: true,
+        benefits: true,
+        createdAt: true,
+        listingDuration: true,
+        Company: {
+          select: {
+            name: true,
+            logo: true,
+            location: true,
+            about: true,
+          },
         },
       },
-    },
-  });
+    }),
+    userId
+      ? prisma.savedJobPost.findUnique({
+          where: {
+            userId_jobPostId: {
+              userId: userId,
+              jobPostId: id,
+            },
+          },
+          select: {
+            id: true,
+          },
+        })
+      : null,
+  ]);
 
   if (!jobData) {
     return notFound();
   }
 
-  return jobData;
+  return { jobData, savedJob };
 }
 
 type Params = Promise<{ jobId: string }>;
@@ -82,13 +99,13 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const session = await auth();
   const req = await request();
-  const decision = await getClient(!!session).protect(req, {requested: 10});
+  const decision = await getClient(!!session).protect(req, { requested: 10 });
 
   if (decision.isDenied()) {
     throw new Error("Forbidden");
   }
 
-  const data = await getJob(jobId);
+  const {jobData : data,savedJob} = await getJob(jobId, session?.user?.id);
   return (
     <div>
       <Navbar />
@@ -123,12 +140,19 @@ export default async function JobIdPage({ params }: { params: Params }) {
               </Button> */}
 
               {session?.user ? (
-                <form></form>
-              ): (
-                <Link href="/login" className={buttonVariants({variant: "outline"})}>
-                <Heart className="size-4" />
-                Save Job
-              </Link>
+                <form action={
+                  savedJob ? unSaveJobPost.bind(null, savedJob.id) : saveJobPost.bind(null, jobId)
+                }>
+                  <SaveJobButton savedJob={!!savedJob} />
+                </form>
+              ) : (
+                <Link
+                  href="/login"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  <Heart className="size-4" />
+                  Save Job
+                </Link>
               )}
             </div>
 
