@@ -1,8 +1,6 @@
 import JobFilters from "@/components/general/JobFilters";
 import JobListings from "@/components/general/JobListings";
 import Navbar from "@/components/general/Navbar";
-import { Card } from "@/components/ui/card";
-import Image from "next/image";
 
 export default function Home() {
   return (
