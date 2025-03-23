@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { XIcon } from "lucide-react";
 import { Button } from "../ui/button";

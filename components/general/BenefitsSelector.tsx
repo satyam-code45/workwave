@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { benefits } from "@/app/utils/listOfBenefits";
 import { Badge } from "../ui/badge";

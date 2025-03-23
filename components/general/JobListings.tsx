@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { prisma } from "@/app/utils/db";
 import { EmptyState } from "./EmptyState";

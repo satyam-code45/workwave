@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Card } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
