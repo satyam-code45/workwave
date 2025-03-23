@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { saveJobPost, unSaveJobPost } from "@/app/actions";
 import arcjet, { detectBot, tokenBucket } from "@/app/utils/arcjet";
 import { auth } from "@/app/utils/auth";
@@ -134,11 +135,6 @@ export default async function JobIdPage({ params }: { params: Params }) {
                 </div>
               </div>
 
-              {/* <Button variant="outline">
-                <Heart className="size-4" />
-                Save Job
-              </Button> */}
-
               {session?.user ? (
                 <form action={
                   savedJob ? unSaveJobPost.bind(null, savedJob.id) : saveJobPost.bind(null, jobId)
@@ -164,7 +160,7 @@ export default async function JobIdPage({ params }: { params: Params }) {
               <h3 className="font-semibold mb-4">Benefits</h3>
 
               <div className="flex flex-wrap gap-3">
-                {benefits.map((benefit) => {
+                {benefits.map((benefit: any) => {
                   const isOffered = data.benefits.includes(benefit.id);
                   return (
                     <Badge

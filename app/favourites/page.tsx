@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EmptyState } from "@/components/general/EmptyState";
 import { prisma } from "../utils/db";
 import requireUser from "../utils/requireUser";
@@ -65,7 +66,7 @@ export default async function FavouritePage() {
 
       <section className="w-full py-12 px-6 md:px-12 md:py-18 lg:py-24">
         <div className="grid grid-cols-1 mt-5 gap-5">
-          {data.map((favourite) => (
+          {data.map((favourite: any) => (
             <JobCard key={favourite.jobPost.id} job={favourite.jobPost} />
           ))}
         </div>

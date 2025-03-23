@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Navbar from "@/components/general/Navbar";
 import { prisma } from "../utils/db";
 import requireUser from "../utils/requireUser";
@@ -100,7 +101,7 @@ export default async function MyJobs() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {data.map((listing) => (
+                    {data.map((listing: any) => (
                       <TableRow key={listing.id}>
                         <TableCell>
                           <Image

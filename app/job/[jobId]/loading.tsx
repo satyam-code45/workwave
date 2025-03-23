@@ -35,7 +35,7 @@ export default function LoadingJobPage() {
               <section className="flex flex-wrap gap-4">
                 <Skeleton className="h-9 w-[200px] mb-4" />
                 <div className="flex flex-wrap gap-3">
-                  {[...Array(15)].map((i, index) => (
+                  {[...Array(15)].map((_, index) => (
                     <Skeleton className="h-7 w-[180px]" key={index} />
                   ))}
                 </div>

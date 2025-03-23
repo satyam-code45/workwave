@@ -41,7 +41,7 @@ export default function LoadingMyJobs() {
                   <TableHead>Actions</TableHead>
                 </TableRow>
                 <TableBody>
-                  {[...Array(7)].map((item, index) => (
+                  {[...Array(7)].map((_, index) => (
                     <TableRow key={index}>
                       <TableCell>
                         <Skeleton className="size-10 rounded-lg" />
