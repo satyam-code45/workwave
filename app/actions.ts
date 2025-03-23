@@ -232,7 +232,7 @@ export async function saveJobPost(jobId: string) {
     },
   });
 
-  revalidatePath(`/job/${jobId}`)
+  revalidatePath(`/job/${jobId}`);
 }
 
 export async function unSaveJobPost(savedJobPostId: string) {
@@ -250,9 +250,69 @@ export async function unSaveJobPost(savedJobPostId: string) {
       id: savedJobPostId,
       userId: user.id,
     },
-    select:{
+    select: {
       jobPostId: true,
-    }
+    },
   });
-  revalidatePath(`/job/${data.jobPostId}`)
+  revalidatePath(`/job/${data.jobPostId}`);
+}
+
+export async function editJobPost(
+  data: z.infer<typeof jobSchema>,
+  jobId: string
+) {
+  const user = await requireUser();
+  const req = await request();
+  const decision = await aj.protect(req);
+  if (decision.isDenied()) {
+    throw new Error("Forbidden");
+  }
+
+  const validateData = jobSchema.parse(data);
+
+  const jobPost = await prisma.jobPost.update({
+    where: {
+      id: jobId,
+      Company: {
+        userId: user.id,
+      },
+    },
+    data: {
+      jobDescription: validateData.jobDescription,
+      jobTitle: validateData.jobTitle,
+      employmentType: validateData.employmentType,
+      listingDuration: validateData.listingDuration,
+      location: validateData.location,
+      salaryFrom: validateData.salaryFrom,
+      SalaryTo: validateData.salaryTo,
+      benefits: validateData.benefits,
+    },
+  });
+  return redirect("/my-jobs");
+}
+
+export async function deleteJobPost(jobId: string) {
+  const session = await requireUser();
+
+  const req = await request();
+  const decision = await aj.protect(req);
+
+  if (decision.isDenied()) {
+    throw new Error("Forbidden");
+  }
+  await prisma.jobPost.delete({
+    where: {
+      id: jobId,
+      Company: {
+        userId: session.id,
+      },
+    },
+  });
+
+  await inngest.send({
+    name: "job/cancel.expiraton",
+    data:{jobId: jobId}
+  });
+
+  return redirect("/my-jobs")
 }
