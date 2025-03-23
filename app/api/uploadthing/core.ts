@@ -1,5 +1,4 @@
 import requireUser from "@/app/utils/requireUser";
-import { log } from "console";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

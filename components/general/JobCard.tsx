@@ -3,7 +3,7 @@ import { Card, CardHeader } from "../ui/card";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { formatCurrency } from "@/app/utils/formatCurrency";
-import { MapIcon, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { formatRelativeTime } from "@/app/utils/formatRelativeTime";
 
 interface iAppProps {

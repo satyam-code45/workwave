@@ -26,7 +26,6 @@ import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { UploadDropzone } from "@/components/general/UploadThingReexported";
 import { createCompany } from "@/app/actions";
-import { on } from "events";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 

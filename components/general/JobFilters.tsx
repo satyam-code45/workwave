@@ -21,7 +21,7 @@ import Image from "next/image";
 
 const jobTypes = ["full-time", "part-time", "contract", "internship"];
 
-export default function jobFilter() {
+export default function JobFilter() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
