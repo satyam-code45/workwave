@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "@/app/utils/db";
 import { inngest } from "../../utils/inngest/client";
 import { resend } from "@/lib/resend";
@@ -67,7 +68,7 @@ export const sendPeriodicJobListings = inngest.createFunction(
         await step.run("send-email", async () => {
           const jobListingsHtml = recentJobs
             .map(
-              (job) => `
+              (job: any) => `
             <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #eee; border-radius: 5px;">
               <h3 style="margin: 0;">${job.jobTitle}</h3>
               <p style="margin: 5px 0;">${job.Company.name} • ${
