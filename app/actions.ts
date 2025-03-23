@@ -1,7 +1,7 @@
 "use server";
 
 import requireUser from "./utils/requireUser";
-import { date, z } from "zod";
+import { z } from "zod";
 import { companySchema, jobSchema, jobSeekerSchema } from "./utils/zodschema";
 import { prisma } from "./utils/db";
 import { redirect } from "next/navigation";
@@ -225,7 +225,7 @@ export async function saveJobPost(jobId: string) {
     throw new Error("Forbidden");
   }
 
-  const data = await prisma.savedJobPost.create({
+  await prisma.savedJobPost.create({
     data: {
       jobPostId: jobId,
       userId: user.id as string,
@@ -270,7 +270,7 @@ export async function editJobPost(
 
   const validateData = jobSchema.parse(data);
 
-  const jobPost = await prisma.jobPost.update({
+  await prisma.jobPost.update({
     where: {
       id: jobId,
       Company: {

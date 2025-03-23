@@ -6,14 +6,21 @@ import { Suspense } from "react";
 
 type searchParams = {
   searchParams: Promise<{
-    page? :string,
+    page?: string;
+    jobTypes?: string;
+    location?: string;
   }>;
-}
+};
 
-export default  async function Home({searchParams}: searchParams) {
+export default async function Home({ searchParams }: searchParams) {
   const params = await searchParams;
 
+  const jobTypes = params.jobTypes?.split(",") || [];
   const currentPage = Number(params.page) || 1;
+  const location = params.location || "";
+  const filterKey = `page=${currentPage};types=${jobTypes.join(
+    ","
+  )};location=${location}`;
 
   return (
     <div>
@@ -21,13 +28,17 @@ export default  async function Home({searchParams}: searchParams) {
 
       <section className="w-full py-12 px-6 md:px-12 md:py-18 lg:py-24">
         <div className="grid grid-cols-3 gap-8">
-        <div className="col-span-1">
-          <JobFilters />
+          <div className="col-span-1">
+            <JobFilters />
           </div>
           <div className="col-span-2">
-          <Suspense  fallback={<JobListingsLoading />} key={currentPage}>
-            <JobListings currentPage={currentPage}/>
-          </Suspense>
+            <Suspense fallback={<JobListingsLoading />} key={filterKey}>
+              <JobListings
+                currentPage={currentPage}
+                jobTypes={jobTypes}
+                location={location}
+              />
+            </Suspense>
           </div>
         </div>
       </section>

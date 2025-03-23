@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -99,10 +99,9 @@ export function CreateJobForm({
     }
   }
 
-  const onError = (errors: any) => {
+  const onError = (errors: FieldErrors<typeof jobSchema>) => {
     console.log("❌ Form submission failed due to validation errors", errors);
   };
-
   return (
     <Form {...form}>
       <form
