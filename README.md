@@ -1,8 +1,6 @@
 # 🌊 WorkWave – Modern Job Portal
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-00C7B7?logo=vercel&logoColor=white&style=for-the-badge)](https://workwave-phi.vercel.app/)
-[![License](https://img.shields.io/github/license/satyam-code45/workwave?style=for-the-badge)](https://github.com/satyam-code45/workwave/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/satyam-code45/workwave?style=for-the-badge)](https://github.com/satyam-code45/workwave/stargazers)
+![WorkWave Preview](https://workwave-phi.vercel.app/og-image.png)
 
 **WorkWave** is a modern full-stack job portal built using Next.js, Prisma, NextAuth, Tiptap, and Tailwind CSS. It allows job seekers and employers to connect through a smooth and intuitive interface, with features like resume uploads, job applications, Stripe payments, and email notifications.
 
@@ -100,14 +98,6 @@ pnpm start     # Start production server
 pnpm lint      # Lint with ESLint
 pnpm prisma    # Prisma commands
 ```
-
----
-
-## 🖼️ Preview
-
-![WorkWave Preview](https://workwave-phi.vercel.app/og-image.png)
-
-> If not auto-generated, consider adding your own screenshot or video walkthrough.
 
 ---
 
