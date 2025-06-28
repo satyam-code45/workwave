@@ -1,6 +1,7 @@
 # 🌊 WorkWave – Modern Job Portal
 
-![WorkWave Preview](https://workwave-phi.vercel.app/og-image.png)
+![image](https://github.com/user-attachments/assets/e79bca5e-f54c-4619-a248-972b54ead196)
+
 
 **WorkWave** is a modern full-stack job portal built using Next.js, Prisma, NextAuth, Tiptap, and Tailwind CSS. It allows job seekers and employers to connect through a smooth and intuitive interface, with features like resume uploads, job applications, Stripe payments, and email notifications.
 
