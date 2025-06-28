@@ -34,28 +34,7 @@ const Navbar = async () => {
           )
 
           }
-        </div>
-
-        {/* //used when first created the Navbar */}
-        {/* <div className="flex items-center gap-4">
-        {session?.user  ? (
-          <form
-            action={async ()=>{
-              "use server";
-              await signOut({redirectTo:"/"})
-            }}
-          >
-          <Button>Logout</Button>
-          </form>
-        ):
-        (
-          <Link href={"/login"}
-        >
-        <Button>Login</Button>
-        </Link>
-        )}
-        <ThemeToggle></ThemeToggle>
-      </div> */}
+        </div>    
       </nav>
     </header>
   );

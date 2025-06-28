@@ -26,7 +26,7 @@ export default async function Home({ searchParams }: searchParams) {
     <div>
       <Navbar />
 
-      <section className="w-full py-12 px-6 md:px-12 md:py-18 lg:py-24">
+      <section className="w-full px-6 md:px-12 py-33 lg:py-24">
         <div className="grid grid-cols-3 gap-8">
           <div className="col-span-1">
             <JobFilters />

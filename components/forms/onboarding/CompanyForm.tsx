@@ -130,18 +130,18 @@ const CompanyForm = () => {
                     </SelectGroup>
                     <SelectGroup>
                       <SelectLabel>Country</SelectLabel>
-                    {filteredCountries.length > 0 ? (
-                      filteredCountries.map((country) => (
-                        <SelectItem key={country.code} value={country.name}>
-                          <span>{country.flagEmoji}</span>
-                          <span className="pl-2">{country.name}</span>
-                        </SelectItem>
-                      ))
-                    ) : (
-                      <p className="p-2 text-center text-gray-500">
-                        No results found
-                      </p>
-                    )}
+                      {filteredCountries.length > 0 ? (
+                        filteredCountries.map((country) => (
+                          <SelectItem key={country.code} value={country.name}>
+                            <span>{country.flagEmoji}</span>
+                            <span className="pl-2">{country.name}</span>
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <p className="p-2 text-center text-gray-500">
+                          No results found
+                        </p>
+                      )}
                     </SelectGroup>
                   </SelectContent>
                 </Select>

@@ -44,7 +44,7 @@ export default function JobFilter() {
       }
       return params.toString();
     },
-    [searchParams]
+    [searchParams]  
   );
 
   function handleJobTypeChnage(jobType: string, checked: boolean) {
@@ -76,6 +76,10 @@ export default function JobFilter() {
       if (b.name.toLowerCase() === typedInput.toLowerCase()) return 1;
       return 0;
     });
+
+
+
+
   return (
     <Card className="h-fit">
       <CardHeader className="flex flex-row justify-between items-center">
